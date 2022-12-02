@@ -89,7 +89,7 @@ class Form extends React.Component {
             value={ cardRare }
             onChange={ onInputChange }
           >
-            <option value="normal">normal</option>
+            <option value="normal" selected>normal</option>
             <option value="raro">raro</option>
             <option value="muito raro">muito raro</option>
           </select>
@@ -128,7 +128,7 @@ Form.propTypes = {
   cardRare: PropTypes.string.isRequired,
   cardTrunfo: PropTypes.bool.isRequired,
   hasTrunfo: PropTypes.bool.isRequired,
-  isSaveButtonDisabled: PropTypes.func.isRequired,
+  isSaveButtonDisabled: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSaveButtonClick: PropTypes.func.isRequired,
 };

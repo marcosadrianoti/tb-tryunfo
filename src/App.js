@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
+import './app.css';
 
 class App extends React.Component {
   state = {
@@ -10,20 +11,54 @@ class App extends React.Component {
     cardAttr2: '0',
     cardAttr3: '0',
     cardImage: '',
-    cardRare: '',
+    cardRare: 'normal',
     cardTrunfo: false,
     hasTrunfo: false,
+    isSaveButtonDisabled: true,
   };
 
-  isSaveButtonDisabled = () => {
+  validationFields = () => {
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+    } = this.state;
+    const validateCardName = cardName !== '';
+    const validateCardDescription = cardDescription !== '';
+    const validateCardImage = cardImage !== '';
+    const validateCardRare = cardRare !== '';
+    const maxNumber = 90;
+    const maxSum = 210;
+    const validadeCardAttr1 = Number(cardAttr1) >= 0 && Number(cardAttr1) <= maxNumber;
+    const validadeCardAttr2 = Number(cardAttr2) >= 0 && Number(cardAttr2) <= maxNumber;
+    const validadeCardAttr3 = Number(cardAttr3) >= 0 && Number(cardAttr3) <= maxNumber;
+    const validadeSumAttr = (
+      Number(cardAttr1)
+      + Number(cardAttr2)
+      + Number(cardAttr3)
+    ) <= maxSum;
+    this.setState({
+      isSaveButtonDisabled: !(
+        validateCardName
+        && validateCardDescription
+        && validateCardImage
+        && validateCardRare
+        && validadeSumAttr
+        && validadeCardAttr1
+        && validadeCardAttr2
+        && validadeCardAttr3),
+    });
   };
 
   onInputChange = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const { name } = target;
     this.setState({
-      [name]: value,
-    });
+      [name]: value }, this.validationFields);
   };
 
   onSaveButtonClick = () => {
@@ -33,9 +68,8 @@ class App extends React.Component {
     return (
       <div>
         <h1>Tryunfo</h1>
-        <section>
+        <section className="formCard">
           <Form
-            isSaveButtonDisabled={ this.isSaveButtonDisabled }
             onInputChange={ this.onInputChange }
             onSaveButtonClick={ this.onSaveButtonClick }
             { ...this.state }
