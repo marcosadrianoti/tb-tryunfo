@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
+import ListCards from './components/ListCards';
 import './app.css';
 
 class App extends React.Component {
@@ -105,6 +106,22 @@ class App extends React.Component {
     }));
   };
 
+  removeCard = (e) => {
+    const cardName = e.target.getAttribute('data-cardname');
+    const { listCards } = this.state;
+    const isCardTrunfo = listCards.filter((card) => card.cardName === cardName)[0]
+      .cardTrunfo;
+    if (isCardTrunfo === true) {
+      this.setState({
+        hasTrunfo: false,
+      });
+    }
+    const newArray = listCards.filter((card) => card.cardName !== cardName);
+    this.setState({
+      listCards: newArray,
+    });
+  };
+
   render() {
     const { listCards } = this.state;
     return (
@@ -121,11 +138,7 @@ class App extends React.Component {
           />
         </section>
         <section className="listCards">
-          <ul>
-            { listCards.map((card, index) => (
-              <li key={ index }><Card { ...card } /></li>
-            ))}
-          </ul>
+          <ListCards listCards={ listCards } removeCard={ this.removeCard } />
         </section>
       </div>
     );
