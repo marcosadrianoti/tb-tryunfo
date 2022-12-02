@@ -57,11 +57,6 @@ class App extends React.Component {
 
   onInputChange = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    // if (target.type === 'checkbox' && value === true){
-    //   this.setState({
-    //     hasTrunfo: true,
-    //   });
-    // };
     const { name } = target;
     this.setState({
       [name]: value }, this.validationFields);
@@ -111,6 +106,7 @@ class App extends React.Component {
   };
 
   render() {
+    const { listCards } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -123,6 +119,13 @@ class App extends React.Component {
           <Card
             { ...this.state }
           />
+        </section>
+        <section className="listCards">
+          <ul>
+            { listCards.map((card, index) => (
+              <li key={ index }><Card { ...card } /></li>
+            ))}
+          </ul>
         </section>
       </div>
     );
