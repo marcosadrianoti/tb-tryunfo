@@ -57,6 +57,11 @@ class App extends React.Component {
 
   onInputChange = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
+    // if (target.type === 'checkbox' && value === true){
+    //   this.setState({
+    //     hasTrunfo: true,
+    //   });
+    // };
     const { name } = target;
     this.setState({
       [name]: value }, this.validationFields);
@@ -85,6 +90,12 @@ class App extends React.Component {
       cardRare,
       cardTrunfo,
     };
+
+    if (cardTrunfo === true) {
+      this.setState({
+        hasTrunfo: true,
+      });
+    }
 
     this.setState((prev) => ({
       listCards: [...prev.listCards, newCard],
