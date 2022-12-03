@@ -2,6 +2,7 @@ import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
 import ListCards from './components/ListCards';
+import FilterByName from './components/FilterByName';
 import './app.css';
 
 class App extends React.Component {
@@ -17,6 +18,8 @@ class App extends React.Component {
     hasTrunfo: false,
     isSaveButtonDisabled: true,
     listCards: [],
+    filteredCards: [],
+    filter: '',
   };
 
   validationFields = () => {
@@ -122,8 +125,29 @@ class App extends React.Component {
     });
   };
 
-  render() {
+  filterByName = (e) => {
     const { listCards } = this.state;
+    // console.log("teste", e.target.value);
+    const filteredList = listCards
+      .filter((card) => card.cardName.includes(e.target.value));
+    this.setState({
+      filteredCards: filteredList,
+      filter: e.target.value,
+    });
+  };
+
+  whatList = () => {
+    const { listCards, filteredCards, filter } = this.state;
+    if (filteredCards.length === 0 && filter !== '') {
+      return filteredCards;
+    }
+    if (filteredCards.length !== 0) {
+      return filteredCards;
+    }
+    return listCards;
+  };
+
+  render() {
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -137,8 +161,15 @@ class App extends React.Component {
             { ...this.state }
           />
         </section>
+        <section className="filters">
+          Filtros de busca
+          <FilterByName filterByName={ this.filterByName } />
+        </section>
         <section className="listCards">
-          <ListCards listCards={ listCards } removeCard={ this.removeCard } />
+          <ListCards
+            listCards={ this.whatList() }
+            removeCard={ this.removeCard }
+          />
         </section>
       </div>
     );
