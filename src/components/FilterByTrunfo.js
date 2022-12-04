@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 class FilterByTrunfo extends React.Component {
   render() {
-    const { filterByName } = this.props;
+    const { filterAnyThing } = this.props;
     return (
       <label htmlFor="trunfoCheck">
         <input
           type="checkbox"
           name="trunfoCheck"
           data-testid="trunfo-filter"
-          onChange={ filterByName }
+          onChange={ filterAnyThing }
         />
         Super Trunfo
       </label>
@@ -19,7 +19,7 @@ class FilterByTrunfo extends React.Component {
 }
 
 FilterByTrunfo.propTypes = {
-  filterByName: PropTypes.func,
+  filterAnyThing: PropTypes.func,
 }.isRequired;
 
 export default FilterByTrunfo;

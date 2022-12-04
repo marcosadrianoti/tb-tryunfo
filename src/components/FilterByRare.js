@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 class FilterByRare extends React.Component {
   render() {
-    const { filterByName, disableFilters } = this.props;
+    const { filterAnyThing, disableFilters } = this.props;
     return (
       <select
         name="cardRare-filter"
         data-testid="rare-filter"
         disabled={ disableFilters }
         // value={ cardRare }
-        onChange={ filterByName }
+        onChange={ filterAnyThing }
       >
         <option value="todas">todas</option>
         <option value="normal">normal</option>
@@ -22,7 +22,7 @@ class FilterByRare extends React.Component {
 }
 
 FilterByRare.propTypes = {
-  filterByName: PropTypes.func,
+  filterAnyThing: PropTypes.func,
   disableFilters: PropTypes.bool,
 }.isRequired;
 

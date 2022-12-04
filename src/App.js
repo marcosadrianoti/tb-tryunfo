@@ -131,7 +131,7 @@ class App extends React.Component {
     });
   };
 
-  filterByName = (e) => {
+  filterAnyThing = (e) => {
     const { listCards } = this.state;
     let filteredList = [];
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -142,8 +142,11 @@ class App extends React.Component {
       filteredList = listCards
         .filter((card) => card.cardRare === value);
     } else if (e.target.type === 'checkbox') {
-      filteredList = listCards
-        .filter((card) => card.cardTrunfo === value);
+      filteredList = value === false
+        ? listCards
+        : listCards
+          .filter((card) => card.cardTrunfo === value);
+
       this.setState({
         disableFilters: value,
       });
@@ -184,14 +187,14 @@ class App extends React.Component {
         <section className="filters">
           Filtros de busca
           <FilterByName
-            filterByName={ this.filterByName }
+            filterAnyThing={ this.filterAnyThing }
             disableFilters={ disableFilters }
           />
           <FilterByRare
-            filterByName={ this.filterByName }
+            filterAnyThing={ this.filterAnyThing }
             disableFilters={ disableFilters }
           />
-          <FilterByTrunfo filterByName={ this.filterByName } />
+          <FilterByTrunfo filterAnyThing={ this.filterAnyThing } />
         </section>
         <section className="listCards">
           <ListCards
