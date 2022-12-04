@@ -3,6 +3,7 @@ import Form from './components/Form';
 import Card from './components/Card';
 import ListCards from './components/ListCards';
 import FilterByName from './components/FilterByName';
+import FilterByRare from './components/FilterByRare';
 import './app.css';
 
 class App extends React.Component {
@@ -98,6 +99,7 @@ class App extends React.Component {
 
     this.setState((prev) => ({
       listCards: [...prev.listCards, newCard],
+      filteredCards: [],
       cardName: '',
       cardDescription: '',
       cardAttr1: '0',
@@ -111,7 +113,7 @@ class App extends React.Component {
 
   removeCard = (e) => {
     const cardName = e.target.getAttribute('data-cardname');
-    const { listCards } = this.state;
+    const { listCards, filteredCards } = this.state;
     const isCardTrunfo = listCards.filter((card) => card.cardName === cardName)[0]
       .cardTrunfo;
     if (isCardTrunfo === true) {
@@ -119,17 +121,25 @@ class App extends React.Component {
         hasTrunfo: false,
       });
     }
-    const newArray = listCards.filter((card) => card.cardName !== cardName);
+    const newListCards = listCards.filter((card) => card.cardName !== cardName);
+    const newFilteredCards = filteredCards.filter((card) => card.cardName !== cardName);
     this.setState({
-      listCards: newArray,
+      listCards: newListCards,
+      filteredCards: newFilteredCards,
     });
   };
 
   filterByName = (e) => {
     const { listCards } = this.state;
-    // console.log("teste", e.target.value);
-    const filteredList = listCards
-      .filter((card) => card.cardName.includes(e.target.value));
+    let filteredList = [];
+    if (e.target.type === 'text') {
+      filteredList = listCards
+        .filter((card) => card.cardName.includes(e.target.value));
+    } else {
+      filteredList = listCards
+        .filter((card) => card.cardRare === e.target.value);
+    }
+
     this.setState({
       filteredCards: filteredList,
       filter: e.target.value,
@@ -138,6 +148,7 @@ class App extends React.Component {
 
   whatList = () => {
     const { listCards, filteredCards, filter } = this.state;
+    if (filter === 'todas') { return listCards; }
     if (filteredCards.length === 0 && filter !== '') {
       return filteredCards;
     }
@@ -164,6 +175,7 @@ class App extends React.Component {
         <section className="filters">
           Filtros de busca
           <FilterByName filterByName={ this.filterByName } />
+          <FilterByRare filterByName={ this.filterByName } />
         </section>
         <section className="listCards">
           <ListCards
