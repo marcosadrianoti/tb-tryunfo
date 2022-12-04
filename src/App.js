@@ -4,6 +4,7 @@ import Card from './components/Card';
 import ListCards from './components/ListCards';
 import FilterByName from './components/FilterByName';
 import FilterByRare from './components/FilterByRare';
+import FilterByTrunfo from './components/FilterByTrunfo';
 import './app.css';
 
 class App extends React.Component {
@@ -21,6 +22,7 @@ class App extends React.Component {
     listCards: [],
     filteredCards: [],
     filter: '',
+    disableFilters: false,
   };
 
   validationFields = () => {
@@ -132,17 +134,23 @@ class App extends React.Component {
   filterByName = (e) => {
     const { listCards } = this.state;
     let filteredList = [];
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     if (e.target.type === 'text') {
       filteredList = listCards
-        .filter((card) => card.cardName.includes(e.target.value));
-    } else {
+        .filter((card) => card.cardName.includes(value));
+    } else if (e.target.type === 'select-one') {
       filteredList = listCards
-        .filter((card) => card.cardRare === e.target.value);
+        .filter((card) => card.cardRare === value);
+    } else if (e.target.type === 'checkbox') {
+      filteredList = listCards
+        .filter((card) => card.cardTrunfo === value);
+      this.setState({
+        disableFilters: value,
+      });
     }
-
     this.setState({
       filteredCards: filteredList,
-      filter: e.target.value,
+      filter: value,
     });
   };
 
@@ -159,6 +167,7 @@ class App extends React.Component {
   };
 
   render() {
+    const { disableFilters } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -174,8 +183,15 @@ class App extends React.Component {
         </section>
         <section className="filters">
           Filtros de busca
-          <FilterByName filterByName={ this.filterByName } />
-          <FilterByRare filterByName={ this.filterByName } />
+          <FilterByName
+            filterByName={ this.filterByName }
+            disableFilters={ disableFilters }
+          />
+          <FilterByRare
+            filterByName={ this.filterByName }
+            disableFilters={ disableFilters }
+          />
+          <FilterByTrunfo filterByName={ this.filterByName } />
         </section>
         <section className="listCards">
           <ListCards
