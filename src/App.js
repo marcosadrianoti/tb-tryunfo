@@ -7,6 +7,8 @@ import FilterByRare from './components/FilterByRare';
 import FilterByTrunfo from './components/FilterByTrunfo';
 import './app.css';
 
+let countRestCards = 0; // Testando o funcionamento de variável "global" dentro da classe.
+
 class App extends React.Component {
   state = {
     cardName: '',
@@ -23,17 +25,14 @@ class App extends React.Component {
     filteredCards: [],
     filter: '',
     disableFilters: false,
+    shuffledCards: [],
+    currentCard: 0,
+    gameStarted: false,
   };
 
   validationFields = () => {
-    const {
-      cardName,
-      cardDescription,
-      cardAttr1,
-      cardAttr2,
-      cardAttr3,
-      cardImage,
-      cardRare,
+    const { cardName, cardDescription, cardAttr1, cardAttr2, cardAttr3,
+      cardImage, cardRare,
     } = this.state;
     const validateCardName = cardName !== '';
     const validateCardDescription = cardDescription !== '';
@@ -65,8 +64,7 @@ class App extends React.Component {
   onInputChange = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const { name } = target;
-    this.setState({
-      [name]: value }, this.validationFields);
+    this.setState({ [name]: value }, this.validationFields);
   };
 
   onSaveButtonClick = (e) => {
@@ -92,13 +90,11 @@ class App extends React.Component {
       cardRare,
       cardTrunfo,
     };
-
     if (cardTrunfo === true) {
       this.setState({
         hasTrunfo: true,
       });
     }
-
     this.setState((prev) => ({
       listCards: [...prev.listCards, newCard],
       filteredCards: [],
@@ -147,9 +143,7 @@ class App extends React.Component {
         : listCards
           .filter((card) => card.cardTrunfo === value);
 
-      this.setState({
-        disableFilters: value,
-      });
+      this.setState({ disableFilters: value });
     }
     this.setState({
       filteredCards: filteredList,
@@ -169,42 +163,87 @@ class App extends React.Component {
     return listCards;
   };
 
+  shufflingCards = () => {
+    const { listCards } = this.state;
+    const param = 0.5;
+    const shuffled = (listCards.sort(() => Math.random() - param));
+    this.setState({
+      shuffledCards: shuffled,
+      currentCard: 0,
+      gameStarted: true,
+    });
+  };
+
+  currCard = () => {
+    const { currentCard, shuffledCards } = this.state;
+    const currentCardPlusOne = currentCard + 1;
+    this.setState({ currentCard: currentCardPlusOne });
+    countRestCards = shuffledCards.length - (currentCard + 2);
+    if (countRestCards < 0) {
+      this.setState({ gameStarted: false });
+    }
+  };
+
   render() {
-    const { disableFilters } = this.state;
+    const { disableFilters, shuffledCards, currentCard, gameStarted } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
-        <section className="formCard">
-          <Form
-            onInputChange={ this.onInputChange }
-            onSaveButtonClick={ this.onSaveButtonClick }
-            { ...this.state }
-          />
-          <Card
-            { ...this.state }
-          />
-        </section>
-        <section className="filters">
-          Filtros de busca
-          <FilterByName
-            filterAnyThing={ this.filterAnyThing }
-            disableFilters={ disableFilters }
-          />
-          <FilterByRare
-            filterAnyThing={ this.filterAnyThing }
-            disableFilters={ disableFilters }
-          />
-          <FilterByTrunfo filterAnyThing={ this.filterAnyThing } />
-        </section>
-        <section className="listCards">
-          <ListCards
-            listCards={ this.whatList() }
-            removeCard={ this.removeCard }
-          />
+        { gameStarted === false
+          ? (
+            <>
+              <section className="formCard">
+                <Form
+                  onInputChange={ this.onInputChange }
+                  onSaveButtonClick={ this.onSaveButtonClick }
+                  { ...this.state }
+                />
+                <Card { ...this.state } />
+              </section>
+              <section className="filters">
+                Filtros de busca
+                <FilterByName
+                  filterAnyThing={ this.filterAnyThing }
+                  disableFilters={ disableFilters }
+                />
+                <FilterByRare
+                  filterAnyThing={ this.filterAnyThing }
+                  disableFilters={ disableFilters }
+                />
+                <FilterByTrunfo filterAnyThing={ this.filterAnyThing } />
+              </section>
+              <section className="listCards">
+                <ListCards
+                  listCards={ this.whatList() }
+                  removeCard={ this.removeCard }
+                />
+              </section>
+            </>
+          )
+          : undefined }
+        <section className="game">
+          <button
+            type="button"
+            onClick={ this.shufflingCards }
+          >
+            Jogar
+          </button>
+          { gameStarted === true && currentCard !== shuffledCards.length
+            ? (
+              <>
+                <Card { ...shuffledCards[currentCard] } />
+                <button type="button" onClick={ this.currCard }>Próxima carta</button>
+                <p>
+                  Cartas restantes:
+                  {` ${currentCard === 0
+                    ? shuffledCards.length - 1
+                    : countRestCards}` }
+                </p>
+              </>
+            ) : undefined }
         </section>
       </div>
     );
   }
 }
-
 export default App;
