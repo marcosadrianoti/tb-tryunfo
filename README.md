@@ -30,9 +30,9 @@ Projeto desenvolvido por mim durante o curso de Desenvolvimento Web na Trybe. Di
   * Exibir a lista de cartas que estão salvas no estado.
   * Criar um botão para remover uma carta do baralho.
   * Requisitos bônus:
-   * Criar o filtro pelo nome da carta.
-   * Criar o filtro por raridade da carta.
-   * Criar o filtro de Super Trunfo.
+    * Criar o filtro pelo nome da carta.
+    * Criar o filtro por raridade da carta.
+    * Criar o filtro de Super Trunfo.
 </details>
   
 ## Rodando o projeto localmente
