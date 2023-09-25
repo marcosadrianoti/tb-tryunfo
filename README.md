@@ -29,9 +29,10 @@ Projeto desenvolvido por mim durante o curso de Desenvolvimento Web na Trybe. Di
   * Criar a validação do Super Trunfo.
   * Exibir a lista de cartas que estão salvas no estado.
   * Criar um botão para remover uma carta do baralho.
-  * Criar o filtro pelo nome da carta.
-  * Criar o filtro por raridade da carta.
-  * Criar o filtro de Super Trunfo.
+  * Requisitos bônus:
+   * Criar o filtro pelo nome da carta.
+   * Criar o filtro por raridade da carta.
+   * Criar o filtro de Super Trunfo.
 </details>
   
 ## Rodando o projeto localmente
@@ -46,13 +47,13 @@ cd meu-diretorio
 Clone o projeto com o comando `git clone`:
 
 ```bash
-git clone git@github.com:marcosadrianoti/tb-shopping-cart.git
+git clone git@github.com:marcosadrianoti/tb-tryunfo.git
 ```
 
 Acesse o diretório do projeto com o comando `cd`:
 
 ```bash
-cd tb-shopping-cart
+cd tb-tryunfo
 ```
 
 Instale as dependências executando:
@@ -64,11 +65,11 @@ npm install
 Execute a aplicação:
 
 ```bash
-npm run dev
+npm run start
 ```
 
-Com a aplicação rodando. Utilize os seguintes comandos para executar os testes:
- * `npm test` (Executa todos os testes presentes na aplicação)
- * `npm run test:coverage` (Executa testes de cobertura)
- * `npm run cy:open` (Executa os testes do Cypress)
-    
+Para executar os testes:
+
+```bash
+npm test
+``` 
